@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">ENTREGAS A REALIZAR</string>
+    <string name="title_activity_maps">DETALHES DA ENTREGA</string>
+
+    <string-array name="status_array">
+        <item>01 - ENTREGA OK</item>
+        <item>02 - CLIENTE NÃO ESTAVA</item>
+        <item>03 - NÃO LOCALIZADO</item>
+    </string-array>
+
+</resources>
