@@ -27,7 +27,6 @@ import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-
 public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
@@ -46,7 +45,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     String lat, lon;
 
     // ATENÇÃO em CONFIGURAÇÕES carregar dados do Motoboy
-    public int IdMotoboy =1;
+    public int IdMotoboy =2;   //1=Sergio
 
     // ID da entrega utilizada quando motoboy clicar no botão: iniciar viagem
     public int IdEntrega =0;
@@ -54,7 +53,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     //Volley conectividade
     private static String STRING_REQUEST_URL="";
     private static final String TAG = "MainActivity";
-
 
     // ==============================================================================================================
     // CICLO DA ACTIVITY

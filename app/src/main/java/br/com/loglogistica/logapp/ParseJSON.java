@@ -4,6 +4,8 @@ package br.com.loglogistica.logapp;
  * Created by Carlos Sales on 30/10/2016.
  */
 
+import android.widget.Toast;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,7 +22,7 @@ public class ParseJSON {
     public static String[] Latitudes;
     public static String[] Longitudes;
 
-    public static final String JSON_ARRAY = "webservice21214.azurewebsites.net";
+    public static final String JSON_ARRAY = "return";
 
     public static final String KEY_NOME = "Nome";
     public static final String KEY_ENDERECO = "Endereco";
@@ -33,9 +35,7 @@ public class ParseJSON {
     public static final String KEY_LONGITUDE = "Longitude";
 
     private JSONArray users = null;
-
     private String json;
-
     public ParseJSON(String json){
         this.json = json;
     }
@@ -44,7 +44,6 @@ public class ParseJSON {
 
         JSONObject jsonObject=null;
         try {
-
             jsonObject = new JSONObject(json);
             users = jsonObject.getJSONArray(JSON_ARRAY);
 

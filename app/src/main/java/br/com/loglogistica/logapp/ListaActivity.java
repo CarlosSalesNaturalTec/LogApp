@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -17,10 +18,9 @@ public class ListaActivity extends ListActivity {
     // DECLARAÇÕES DIVERSAS
     // ==============================================================================================================
     public  ListView lv;
-
     ProgressDialog progressDialog;
 
-    //Volley conectividade. ATENÇÃO ID do Motoboy
+    //Volley conectividade. ATENÇÃO para ID do Motoboy. Buscar em Configurações
     public static final String JSON_URL = "http://webservice21214.azurewebsites.net/wservice.asmx/ListaEntregas?IdMotoboy=1";
     private static final String TAG = "ListaActivity";
 
@@ -68,8 +68,8 @@ public class ListaActivity extends ListActivity {
         ParseJSON pj = new ParseJSON(json);
         pj.parseJSON();
 
-        ListaAdapter cl = new ListaAdapter(this, ParseJSON.Bairros, ParseJSON.Enderecos);
-        lv.setAdapter(cl);
+        //ListaAdapter cl = new ListaAdapter(this, ParseJSON.Bairros, ParseJSON.Enderecos);
+        //lv.setAdapter(cl);
     }
 
 
@@ -93,8 +93,8 @@ public class ListaActivity extends ListActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Erro Envio: " + error.getMessage());
-                //Toast.makeText(ListaActivity.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                //VolleyLog.d(TAG, "Erro Envio: " + error.getMessage());
+                Toast.makeText(ListaActivity.this,error.getMessage(), Toast.LENGTH_LONG).show();
                 progressDialog.hide();
             }
         });
