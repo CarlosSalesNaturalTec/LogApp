@@ -36,7 +36,6 @@ public class ParseJSON {
 
     private JSONArray users = null;
     private String json;
-
     public ParseJSON(String json){
         this.json = json;
     }
