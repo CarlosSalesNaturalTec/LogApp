@@ -8,19 +8,20 @@
     android:layout_height="match_parent"
     >
 
-    <LinearLayout
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/logojpg"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            />
-    </LinearLayout>
+        app:srcCompat="@drawable/logo2"
+        android:id="@+id/imageView" />
+
+    <TextView
+        android:text="LOG Logistica"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="22dp"
+        android:textAlignment="center"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,7 +40,7 @@
         <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mapa  "
+        android:text="Mapa das Entregas"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:onClick="btTransito" />
@@ -47,10 +48,9 @@
     </LinearLayout>
 
     <TextView
-        android:text="TextView"
+        android:text=""
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"
-        android:layout_weight="1" />
+        android:id="@+id/textView" />
 
 </LinearLayout>

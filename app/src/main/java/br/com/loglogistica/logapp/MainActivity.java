@@ -27,7 +27,6 @@ import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-
 public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
@@ -129,7 +128,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         horaFormat = new SimpleDateFormat("HH:mm:ss");
         Date date = new Date();
-        txtmensagem.setText(dateFormat.format(date) + " " + horaFormat.format(date));
+        //txtmensagem.setText(dateFormat.format(date) + " " + horaFormat.format(date));
 
         STRING_REQUEST_URL="http://webservice21214.azurewebsites.net/wservice.asmx/Historico?IDMotoboy="+ IdMotoboy + "&identrega="
                 + IdEntrega + "&latitude=" + lat + "&longitude=" + lon + "&dataleitura=" + dateFormat.format(date) + "%20" + horaFormat.format(date);
@@ -159,7 +158,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         horaFormat = new SimpleDateFormat("HH:mm:ss");
         Date date = new Date();
-        txtmensagem.setText(dateFormat.format(date) + " " + horaFormat.format(date));
+        //txtmensagem.setText(dateFormat.format(date) + " " + horaFormat.format(date));
 
         STRING_REQUEST_URL="http://webservice21214.azurewebsites.net/wservice.asmx/Historico?IDMotoboy="+ IdMotoboy + "&identrega="
                 + IdEntrega + "&latitude=" + lat + "&longitude=" + lon + "&dataleitura=" + dateFormat.format(date) + "%20" + horaFormat.format(date);
