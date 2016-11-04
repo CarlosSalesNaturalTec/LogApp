@@ -14,16 +14,16 @@ import android.widget.TextView;
 //ArrayAdapter será responsável por administrar e retornar as Views para a nossa lista
 public class ListaAdapter extends ArrayAdapter<String>{
     private final Activity context;
-    private final String[] linguagens;
-    private final String[] descricao;
+    private final String[] bairros;
+    private final String[] enderecos;
 
     //O construtor pode receber quantos parametros forem necessários mas um array de String deve ser passado como parametro do construtor da super-classe
-    public ListaAdapter(Activity context, String[] linguagens, String[] descricao)
+    public ListaAdapter(Activity context, String[] bairros, String[] enderecos)
     {
-        super(context, R.layout.lista_itens, linguagens);
+        super(context, R.layout.lista_itens, bairros);
         this.context = context;
-        this.linguagens = linguagens;
-        this.descricao = descricao;
+        this.bairros = bairros;
+        this.enderecos = enderecos;
     }
     @Override
     public View getView(int position, View view, ViewGroup parent) {
@@ -37,8 +37,8 @@ public class ListaAdapter extends ArrayAdapter<String>{
         TextView txtDescricao = (TextView)rowView.findViewById(R.id.txtDescricao);
 
         //---passe os textos baseados na posição atual do listView
-        txtTitulo.setText(linguagens[position]);
-        txtDescricao.setText(descricao[position]);
+        txtTitulo.setText(bairros[position]);
+        txtDescricao.setText(enderecos[position]);
         return rowView;
     }
 }

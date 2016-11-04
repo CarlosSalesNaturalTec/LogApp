@@ -5,17 +5,11 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
 public class ListaActivity extends ListActivity {
 
     // ==============================================================================================================
@@ -38,17 +32,16 @@ public class ListaActivity extends ListActivity {
 
         lv = (ListView) findViewById(android.R.id.list);
         progressDialog = new ProgressDialog(this);
-    }
 
-    public void btatualizar(View view){
+        //requisita lista de entregas
         volleyStringRequst(JSON_URL);
     }
-
-
+    
     //======================================================================================================================
     //VOLLEY CONECTIVIDADE - TROCA DE DADOS COM WEB-SERVICE
     //=====================================================================================================================
     private void showJSON(String json){
+        //monta Array String com lista de Entregas
         ParseJSON pj = new ParseJSON(json);
         pj.parseJSON();
 
@@ -69,16 +62,21 @@ public class ListaActivity extends ListActivity {
         StringRequest strReq = new StringRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                //Formata retorno obtido do web-service (padrão parsing JSON)
+                String str1 =  "{\"entregas\":" + response.toString().substring(63);
+                int tamanho=str1.length() -9 ;
+                String str2 = str1.substring(0,tamanho) + "}";
 
-                int tamanho=response.toString().length();
-                String str1 = "return : {" + response.toString().substring(24,tamanho-9) + "}";
-                showJSON(str1);
+                //envia retorno para processo de Parsing
+                showJSON(str2);
                 progressDialog.hide();
+
             }
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+
                 progressDialog.hide();
             }
         });

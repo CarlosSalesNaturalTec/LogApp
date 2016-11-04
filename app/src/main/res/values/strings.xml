@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">ROTEIRO</string>
-    <string name="title_activity_maps">TRÂNSITO</string>
-    <string name="title_activity_lista">ENTREGAS A REALIZAR</string>
+    <string name="app_name">Roteiro</string>
+    <string name="title_activity_maps">Mapa</string>
+    <string name="title_activity_lista">Entregas a Realizar</string>
 
     <string-array name="status_array">
         <item>SELECIONE STATUS DA ENTREGA</item>
