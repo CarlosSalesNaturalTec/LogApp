@@ -10,27 +10,16 @@ import org.json.JSONObject;
 
 public class ParseJSON {
 
-    public static String[] Nomes;
-    public static String[] Enderecos;
-    public static String[] PontoRefs;
-    public static String[] Bairros;
-    public static String[] Cidades;
-    public static String[] Telefones;
-    public static String[] Obsvs;
-    public static String[] Latitudes;
-    public static String[] Longitudes;
-
     public static final String JSON_ARRAY = "entregas";
 
-    public static final String KEY_NOME = "Nome";
-    public static final String KEY_ENDERECO = "Endereco";
-    public static final String KEY_PONTOREF = "Ponto_Ref";
-    public static final String KEY_BAIRRO = "Bairro";
-    public static final String KEY_CIDADE = "Cidade";
-    public static final String KEY_TELEFONE = "Telefone";
-    public static final String KEY_OBS = "Observacoes";
-    public static final String KEY_LATITUDE = "Latitude";
-    public static final String KEY_LONGITUDE = "Longitude";
+    public static String[] IDs;
+    public static String[] Titulos;
+    public static String[] SubTitulos;
+
+    // defina aqui os campos a serem lidos
+    public static final String KEY_ID = "ID_Entrega";
+    public static final String KEY_TITULO = "Bairro";
+    public static final String KEY_SUBTITULO = "Endereco";
 
     private JSONArray users = null;
     private String json;
@@ -46,29 +35,15 @@ public class ParseJSON {
             jsonObject = new JSONObject(json);
             users = jsonObject.getJSONArray(JSON_ARRAY);
 
-            Nomes = new String[users.length()];
-            Enderecos = new String[users.length()];
-            PontoRefs = new String[users.length()];
-            Bairros = new String[users.length()];
-            Cidades = new String[users.length()];
-            Telefones = new String[users.length()];
-            Obsvs = new String[users.length()];
-            Latitudes = new String[users.length()];
-            Longitudes = new String[users.length()];
+            Titulos = new String[users.length()];
+            SubTitulos = new String[users.length()];
+            IDs = new String[users.length()];
 
             for(int i=0;i<users.length();i++){
-
                 JSONObject jo = users.getJSONObject(i);
-
-                Nomes[i] = jo.getString(KEY_NOME);
-                Enderecos[i] = jo.getString(KEY_ENDERECO);
-                PontoRefs[i] = jo.getString(KEY_PONTOREF);
-                Bairros[i] = jo.getString(KEY_BAIRRO);
-                Cidades[i] = jo.getString(KEY_CIDADE);
-                Telefones[i] = jo.getString(KEY_TELEFONE);
-                Obsvs[i] = jo.getString(KEY_OBS);
-                Latitudes[i] = jo.getString(KEY_LATITUDE);
-                Longitudes[i] = jo.getString(KEY_LONGITUDE);
+                Titulos[i] = jo.getString(KEY_TITULO);
+                SubTitulos[i] = jo.getString(KEY_SUBTITULO);
+                IDs[i] = jo.getString(KEY_ID);
             }
 
         } catch (JSONException e) {

@@ -20,17 +20,24 @@
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/txtLinguagens"
+            android:id="@+id/txtID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:textSize="8sp"/>
+
+        <TextView
+            android:id="@+id/txtTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/txtDescricao"
+            android:id="@+id/txtSubTitulo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:textSize="12sp" />
     </LinearLayout>
 

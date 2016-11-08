@@ -45,7 +45,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     String lat, lon;
 
     // ATENÇÃO em CONFIGURAÇÕES carregar dados do Motoboy
-    public int IdMotoboy =2;   //1=Sergio
+    public int IdMotoboy =3;
 
     // ID da entrega utilizada quando motoboy clicar no botão: iniciar viagem
     public int IdEntrega =0;
@@ -107,7 +107,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(30000); // Update location every second
+        mLocationRequest.setInterval(60000); // Update location every second
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
@@ -127,6 +127,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         horaFormat = new SimpleDateFormat("HH:mm:ss");
         Date date = new Date();
+        txtmensagem.setText(lat + " " + lon);
 
         STRING_REQUEST_URL="http://webservice21214.azurewebsites.net/wservice.asmx/Historico?IDMotoboy="+ IdMotoboy + "&identrega="
                 + IdEntrega + "&latitude=" + lat + "&longitude=" + lon + "&dataleitura=" + dateFormat.format(date) + "%20" + horaFormat.format(date);
@@ -156,7 +157,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         horaFormat = new SimpleDateFormat("HH:mm:ss");
         Date date = new Date();
-        //txtmensagem.setText(dateFormat.format(date) + " " + horaFormat.format(date));
+        txtmensagem.setText(lat + " " + lon);
 
         STRING_REQUEST_URL="http://webservice21214.azurewebsites.net/wservice.asmx/Historico?IDMotoboy="+ IdMotoboy + "&identrega="
                 + IdEntrega + "&latitude=" + lat + "&longitude=" + lon + "&dataleitura=" + dateFormat.format(date) + "%20" + horaFormat.format(date);

@@ -14,16 +14,18 @@ import android.widget.TextView;
 //ArrayAdapter será responsável por administrar e retornar as Views para a nossa lista
 public class ListaAdapter extends ArrayAdapter<String>{
     private final Activity context;
-    private final String[] bairros;
-    private final String[] enderecos;
+    private final String[] ids;
+    private final String[] titulos;
+    private final String[] subtitulos;
 
     //O construtor pode receber quantos parametros forem necessários mas um array de String deve ser passado como parametro do construtor da super-classe
-    public ListaAdapter(Activity context, String[] bairros, String[] enderecos)
+    public ListaAdapter(Activity context, String[] ids, String[] titulos, String[] subtitulos)
     {
-        super(context, R.layout.lista_itens, bairros);
+        super(context, R.layout.lista_itens, ids);
         this.context = context;
-        this.bairros = bairros;
-        this.enderecos = enderecos;
+        this.ids = ids;
+        this.titulos = titulos;
+        this.subtitulos = subtitulos;
     }
     @Override
     public View getView(int position, View view, ViewGroup parent) {
@@ -33,12 +35,14 @@ public class ListaAdapter extends ArrayAdapter<String>{
         View rowView= inflater.inflate(R.layout.lista_itens, null, true);
 
         //---retorne a referencia de todos os objetos do layout
-        TextView txtTitulo = (TextView) rowView.findViewById(R.id.txtLinguagens);
-        TextView txtDescricao = (TextView)rowView.findViewById(R.id.txtDescricao);
+        TextView txtID = (TextView) rowView.findViewById(R.id.txtID);
+        TextView txtTitulo = (TextView) rowView.findViewById(R.id.txtTitulo);
+        TextView txtSubtitulo = (TextView)rowView.findViewById(R.id.txtSubTitulo);
 
         //---passe os textos baseados na posição atual do listView
-        txtTitulo.setText(bairros[position]);
-        txtDescricao.setText(enderecos[position]);
+        txtID.setText(ids[position]);
+        txtTitulo.setText(titulos[position]);
+        txtSubtitulo.setText(subtitulos[position]);
         return rowView;
     }
 }

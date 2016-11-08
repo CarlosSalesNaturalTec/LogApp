@@ -3,13 +3,11 @@ package br.com.loglogistica.logapp;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+
 public class ListaActivity extends ListActivity {
 
     // ==============================================================================================================
@@ -19,7 +17,7 @@ public class ListaActivity extends ListActivity {
     ProgressDialog progressDialog;
 
     //Volley conectividade. ATENÇÃO ID do Motoboy
-    public static final String JSON_URL = "http://webservice21214.azurewebsites.net/wservice.asmx/ListaEntregas?IdMotoboy=1";
+    public static final String JSON_URL = "http://webservice21214.azurewebsites.net/wservice.asmx/ListaEntregas?IdMotoboy=2";
     private static final String TAG = "ListaActivity";
 
     // ==============================================================================================================
@@ -36,7 +34,7 @@ public class ListaActivity extends ListActivity {
         //requisita lista de entregas
         volleyStringRequst(JSON_URL);
     }
-    
+
     //======================================================================================================================
     //VOLLEY CONECTIVIDADE - TROCA DE DADOS COM WEB-SERVICE
     //=====================================================================================================================
@@ -45,7 +43,7 @@ public class ListaActivity extends ListActivity {
         ParseJSON pj = new ParseJSON(json);
         pj.parseJSON();
 
-        ListaAdapter cl = new ListaAdapter(this, ParseJSON.Bairros, ParseJSON.Enderecos);
+        ListaAdapter cl = new ListaAdapter(this, ParseJSON.IDs, ParseJSON.Titulos, ParseJSON.SubTitulos);
         lv.setAdapter(cl);
     }
 
