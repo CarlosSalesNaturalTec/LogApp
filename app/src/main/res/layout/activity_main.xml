@@ -20,25 +20,17 @@
         />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Roteiro a Realizar"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
         android:onClick="btLista"/>
 
         <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Ver Roteiro no Mapa"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
         android:onClick="btTransito" />
-
-    <TextView
-        android:text=""
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView" />
 
 </LinearLayout>

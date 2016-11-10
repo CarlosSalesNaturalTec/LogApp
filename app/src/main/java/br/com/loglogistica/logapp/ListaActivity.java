@@ -2,7 +2,10 @@ package br.com.loglogistica.logapp;
 
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -28,15 +31,37 @@ public class ListaActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista);
 
+        //monta ListView
         lv = (ListView) findViewById(android.R.id.list);
         progressDialog = new ProgressDialog(this);
 
-        //requisita lista de entregas
+        //requisita lista de entregas e preenche ListView
         volleyStringRequst(JSON_URL);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+
+                //ID da Entrega selecionada
+                String  idEntrega    = (String) lv.getItemAtPosition(position);
+
+                //transferencia de dados entre Activitys
+                Bundle b = new Bundle();
+                b.putString("IDEntrega",idEntrega);
+
+                //abre nova Activity
+                Intent proximatela = new Intent(getApplicationContext(),DetalhesActivity.class);
+                proximatela.putExtras(b);
+                startActivity(proximatela);
+
+            }
+        });
+
     }
 
     //======================================================================================================================
-    //VOLLEY CONECTIVIDADE - TROCA DE DADOS COM WEB-SERVICE
+    //JSON Parsing
     //=====================================================================================================================
     private void showJSON(String json){
         //monta Array String com lista de Entregas
@@ -46,7 +71,6 @@ public class ListaActivity extends ListActivity {
         ListaAdapter cl = new ListaAdapter(this, ParseJSON.IDs, ParseJSON.Titulos, ParseJSON.SubTitulos);
         lv.setAdapter(cl);
     }
-
 
     //======================================================================================================================
     //VOLLEY CONECTIVIDADE - TROCA DE DADOS COM WEB-SERVICE
