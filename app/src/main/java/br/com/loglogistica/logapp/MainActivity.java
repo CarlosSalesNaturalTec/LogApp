@@ -36,7 +36,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
     DateFormat dateFormat;
     DateFormat horaFormat;
-    TextView txtmensagem;
 
     // dados de geolocalizacao
     Location mLastLocation;
@@ -104,7 +103,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(120000); // Update location every second
+        mLocationRequest.setInterval(10000); // Atualizaçao a cada : 10 segundos
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;

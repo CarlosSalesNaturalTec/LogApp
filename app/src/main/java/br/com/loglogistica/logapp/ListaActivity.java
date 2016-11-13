@@ -24,7 +24,7 @@ public class ListaActivity extends ListActivity {
     private static final String TAG = "ListaActivity";
 
     // ==============================================================================================================
-    // CICLO DA ACTIVITY
+    // CICLO DA ACTIVITY - onCreate
     // ==============================================================================================================
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +38,7 @@ public class ListaActivity extends ListActivity {
         //requisita lista de entregas e preenche ListView
         volleyStringRequst(JSON_URL);
 
+        //verifica seleção do usuário
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -73,7 +74,7 @@ public class ListaActivity extends ListActivity {
     }
 
     //======================================================================================================================
-    //VOLLEY CONECTIVIDADE - TROCA DE DADOS COM WEB-SERVICE
+    //VOLLEY CONECTIVIDADE - TROCA DE DADOS COM WEB-SERVICE - requisita Lista de Entregas (Bairro e Endereço)
     //======================================================================================================================
     public void volleyStringRequst(String url){
 
@@ -89,7 +90,7 @@ public class ListaActivity extends ListActivity {
                 int tamanho=str1.length() -9 ;
                 String str2 = str1.substring(0,tamanho) + "}";
 
-                //envia retorno para processo de Parsing
+                //envia retorno formatado para processo de Parsing
                 showJSON(str2);
                 progressDialog.hide();
 
