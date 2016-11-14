@@ -25,7 +25,6 @@ public class ListaActivity extends ListActivity {
 
     // ==============================================================================================================
     // CICLO DA ACTIVITY - onCreate
-    // ==============================================================================================================
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +57,15 @@ public class ListaActivity extends ListActivity {
 
             }
         });
+
+    }
+    // onResume
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        //atualiza lista de entregas e preenche ListView
+        volleyStringRequst(JSON_URL);
 
     }
 
