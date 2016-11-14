@@ -23,6 +23,7 @@ public class DetalhesActivity extends Activity  {
     TextView txtNome, txtBairro, txtEnderec, txtPref, txtCidade, txtTelefone, txtObs, txtStartTravel;
     ProgressDialog progressDialog;
     DateFormat dateFormat, horaFormat;
+    Spinner spinner;
 
     public static String JSON_URL = "", MapLat, MapLongt;
     public String IdEntrega="",StatusEntrega="";
@@ -50,7 +51,7 @@ public class DetalhesActivity extends Activity  {
         txtStartTravel = (TextView) findViewById(R.id.txtStartTravel);
 
         //monta Spinner (combo com lista de opções)
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        spinner = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource( this,
                 R.array.status_array, android.R.layout.simple_spinner_item );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -205,6 +206,8 @@ public class DetalhesActivity extends Activity  {
 
         txtStartTravel.setText("Final da Viagem: " + horaFormat.format(date));
         botaoConcluir.setEnabled(false);
+        spinner.setEnabled(false);
+
 
     }
 
