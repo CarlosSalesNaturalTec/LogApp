@@ -21,6 +21,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsDetalhe extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -31,6 +32,9 @@ public class MapsDetalhe extends FragmentActivity implements OnMapReadyCallback,
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
     Location mLastLocation;
+
+    public String MapLatitude="";
+    public String MapLongitude="";
 
     //===================================================================================================
     // Ciclo da Activity - onCreate
@@ -51,8 +55,8 @@ public class MapsDetalhe extends FragmentActivity implements OnMapReadyCallback,
 
         //recupera dados passados da Activity anterior - Latitude e Longitude do local da entrega
         Bundle b = getIntent().getExtras();
-        String MapLatitude = b.getString("MapLatitude");
-        String MapLongitude = b.getString("MapLongitude");
+        MapLatitude = b.getString("MapLatitude");
+        MapLongitude = b.getString("MapLongitude");
 
     }
 
@@ -65,6 +69,9 @@ public class MapsDetalhe extends FragmentActivity implements OnMapReadyCallback,
 
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+        // adiciona marcador no local da entrega
+        addMarks(mMap);
 
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -194,5 +201,20 @@ public class MapsDetalhe extends FragmentActivity implements OnMapReadyCallback,
             //You can add here other case statements according to your requirement.
         }
     }
+
+    //ADICIONA MARCADOR
+    private void addMarks(GoogleMap googleMap) {
+
+        double mlat = Double.parseDouble(MapLatitude);
+        double mlng = Double.parseDouble(MapLongitude);
+
+        LatLng latLng = new LatLng(mlat, mlng);
+
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        markerOptions.title("Local da Entrega");
+        mMap.addMarker(markerOptions);
+    }
+
 
 }

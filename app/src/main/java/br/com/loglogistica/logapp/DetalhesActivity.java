@@ -13,24 +13,28 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class DetalhesActivity extends Activity  {
 
     Button botaoConcluir, botaoMapa, botaoStartTravel;
-    TextView txtNome, txtBairro, txtEnderec, txtPref, txtCidade, txtTelefone, txtObs;
+    TextView txtNome, txtBairro, txtEnderec, txtPref, txtCidade, txtTelefone, txtObs, txtStartTravel;
     ProgressDialog progressDialog;
-    public static String JSON_URL = "", MapLat, MapLongt;
+    DateFormat dateFormat, horaFormat;
 
+    public static String JSON_URL = "", MapLat, MapLongt;
+    public String IdEntrega="",StatusEntrega="";
 
     //======================================================================================================================
     //Ciclo da Activity - on Create
-    //======================================================================================================================
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalhes);
 
-        //inicializa componentes
+        //inicializa componentes que receberão dados da entrega
         botaoConcluir = (Button) findViewById(R.id.btConcluida);
         botaoMapa = (Button) findViewById(R.id.btMap);
         botaoStartTravel = (Button) findViewById(R.id.btStart);
@@ -43,6 +47,7 @@ public class DetalhesActivity extends Activity  {
         txtCidade = (TextView) findViewById(R.id.txtCidade);
         txtTelefone = (TextView) findViewById(R.id.txtTelefone);
         txtObs = (TextView) findViewById(R.id.txtObs);
+        txtStartTravel = (TextView) findViewById(R.id.txtStartTravel);
 
         //monta Spinner (combo com lista de opções)
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
@@ -66,7 +71,8 @@ public class DetalhesActivity extends Activity  {
                     botaoMapa.setEnabled(false);
                 }
 
-                String itemSelecao = parent.getItemAtPosition(position).toString();
+                StatusEntrega = parent.getItemAtPosition(position).toString();
+
 
             }
 
@@ -76,9 +82,9 @@ public class DetalhesActivity extends Activity  {
             }
         });
 
-        //recupera dados passados da Activity anterior
+        //recupera dados passados da Activity anterior - ID da Entrega
         Bundle b = getIntent().getExtras();
-        String IdEntrega = b.getString("IDEntrega");
+        IdEntrega = b.getString("IDEntrega");
 
         //requisita detalhes de entrega
         JSON_URL = "http://webservice21214.azurewebsites.net/wservice.asmx/DetalhesEntrega?IdEntrega=" + IdEntrega;
@@ -86,9 +92,9 @@ public class DetalhesActivity extends Activity  {
 
     }
 
+
     //======================================================================================================================
-    //VOLLEY CONECTIVIDADE - TROCA DE DADOS COM WEB-SERVICE
-    //======================================================================================================================
+    //Consulta Web-Service - Detalhes da Entrega (Volley library)
     public void volleyStringRequst(String url){
 
         String  REQUEST_TAG = "br.com.loglogistica.requisitaDetalhes";
@@ -118,6 +124,14 @@ public class DetalhesActivity extends Activity  {
                 txtTelefone.setText("Telefone: " + ParseDetalhes.Campo6);
                 txtObs.setText(ParseDetalhes.Campo7);
 
+                int tamanho2=ParseDetalhes.Campo10.length();
+                if (tamanho2==0){
+
+                }else {
+                    txtStartTravel.setText("Inicio da Viagem: " + ParseDetalhes.Campo10);
+                    botaoStartTravel.setEnabled(false);
+                }
+
                 MapLat = ParseDetalhes.Campo8;
                 MapLongt = ParseDetalhes.Campo9;
 
@@ -136,9 +150,12 @@ public class DetalhesActivity extends Activity  {
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(strReq, REQUEST_TAG);
     }
 
+
+    //======================================================================================================================
+    // Mapa do local da entrega
     public void btMapaDetalhe(View view){
 
-        //transferencia de dados entre Activitys
+        //transferencia de dados entre Activitys - coordenadas do local da entrega
         Bundle b = new Bundle();
         b.putString("MapLatitude",MapLat);
         b.putString("MapLongitude",MapLongt);
@@ -148,6 +165,73 @@ public class DetalhesActivity extends Activity  {
         proximatela.putExtras(b);
         startActivity(proximatela);
 
+    }
+
+
+    //======================================================================================================================
+    // Atualiza Status - Inicio e Final de Viagem
+    public void btStartTravel (View view){
+
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        horaFormat = new SimpleDateFormat("HH:mm:ss");
+        Date date = new Date();
+
+        // ATENÇÃO!!!! pegar localização corrente do motoboy. corrigir
+        String lat ="0",lon="0";
+
+        // envia requisição para atualizar status da entrega: VIAGEM INICIADA
+        JSON_URL="http://webservice21214.azurewebsites.net/wservice.asmx/StartTravel?IdEntrega="+ IdEntrega + "&latitude=" + lat + "&longitude=" + lon + "&dataleitura=" + dateFormat.format(date) + "%20" + horaFormat.format(date);
+        volleyUpdateTravel(JSON_URL);
+
+        txtStartTravel.setText("Inicio da Viagem: " + horaFormat.format(date));
+        botaoStartTravel.setEnabled(false);
+
+    }
+
+    public void btEndTravel (View view){
+
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        horaFormat = new SimpleDateFormat("HH:mm:ss");
+        Date date = new Date();
+
+        // ATENÇÃO!!!! pegar localização corrente do motoboy. corrigir
+        String lat ="0",lon="0";
+        String mStatus = StatusEntrega.substring(0,2);
+
+        // envia requisição para atualizar status da entrega: VIAGEM CONCLUIDA
+        JSON_URL="http://webservice21214.azurewebsites.net/wservice.asmx/EndTravel?IdEntrega="+ IdEntrega +
+                "&latitude=" + lat + "&longitude=" + lon + "&dataLeitura=" + dateFormat.format(date) + "%20" + horaFormat.format(date)+ "&Status=" + mStatus;
+        volleyUpdateTravel(JSON_URL);
+
+        txtStartTravel.setText("Final da Viagem: " + horaFormat.format(date));
+        botaoConcluir.setEnabled(false);
+
+    }
+
+
+    //======================================================================================================================
+    // Comunicação com Web-service (Volley Library)
+    public void volleyUpdateTravel(String url){
+
+        String  REQUEST_TAG = "br.com.loglogistica.updateTravel";
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Aguarde...");
+        progressDialog.show();
+
+        StringRequest strReq = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                progressDialog.hide();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.hide();
+            }
+        });
+        // Adding String request to request queue
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(strReq, REQUEST_TAG);
     }
 
 }

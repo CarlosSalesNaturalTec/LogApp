@@ -44,7 +44,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     String lat, lon;
 
     // ATENÇÃO em CONFIGURAÇÕES carregar dados do Motoboy
-    public int IdMotoboy =2;
+    public int IdMotoboy =1;
 
     // ID da entrega utilizada quando motoboy clicar no botão: iniciar viagem
     public int IdEntrega =0;
