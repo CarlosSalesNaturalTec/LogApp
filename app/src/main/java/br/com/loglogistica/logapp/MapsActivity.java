@@ -1,6 +1,7 @@
 package br.com.loglogistica.logapp;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -10,9 +11,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-
 import android.widget.Toast;
-
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -23,25 +25,42 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
+    // ==============================================================================================================
+    // DECLARAÇÕES DIVERSAS
     private GoogleMap mMap;
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
     Location mLastLocation;
+    ProgressDialog progressDialog;
+
+    //Volley conectividade
+    private static String STRING_REQUEST_URL="";
+    public static final String JSON_ARRAY = "entregas";
+    public static String[] Campo1,Campo2, Campo3;
+    public static final String KEY1 = "ID_Entrega";
+    public static final String KEY2 = "Latitude";
+    public static final String KEY3 = "Longitude";
+    private JSONArray users = null;
+    // ==============================================================================================================
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        //---------------------------------------------------------
+        //------------------------------------------------------------------------------------------
         // MAPA
-        //---------------------------------------------------------
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
         }
@@ -49,20 +68,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        //------------------------------------------------------------------------------------------
 
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * If Google Play services is not installed on the device, the user will be prompted to install
-         * it inside the SupportMapFragment. This method will only be triggered once the user has
-         * installed Google Play services and returned to the app.
-         */
 
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -80,6 +91,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
         }
+
+        // solicita lista com coordenadas das entregas para exibição de marcadores - utilizando Volley Library
+        STRING_REQUEST_URL="http://webservice21214.azurewebsites.net/wservice.asmx/ListaCoordenadas?IdMotoboy="+Global.globalID;
+        volleyStringRequst(STRING_REQUEST_URL);
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -193,6 +208,77 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             // other 'case' lines to check for other permissions this app might request.
             //You can add here other case statements according to your requirement.
+        }
+    }
+
+
+    //======================================================================================================================
+    //VOLLEY CONECTIVIDADE - TROCA DE DADOS COM WEB-SERVICE
+    public void volleyStringRequst(String url){
+
+        String  REQUEST_TAG = "br.com.loglogistica.volleyStringRequst";
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Aguarde...");
+        progressDialog.show();
+
+        StringRequest strReq = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //Formata retorno obtido do web-service (padrão parsing JSON)
+                String str1 =  "{\"entregas\":" + response.toString().substring(63);
+                int tamanho=str1.length() -9 ;
+                String str2 = str1.substring(0,tamanho) + "}";
+                progressDialog.hide();
+
+                //parsing JSON e monta marcadores
+                Marcadores(str2);
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.hide();
+                Toast.makeText(MapsActivity.this, "Falha na Obtenção de Coordenadas", Toast.LENGTH_LONG).show();
+            }
+        });
+        // Adding String request to request queue
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(strReq, REQUEST_TAG);
+    }
+    //======================================================================================================================
+
+    public void Marcadores(String json){
+
+        JSONObject jsonObject=null;
+
+        try {
+            jsonObject = new JSONObject(json);
+            users = jsonObject.getJSONArray(JSON_ARRAY);
+
+            Campo1 = new String[users.length()];
+            Campo2 = new String[users.length()];
+            Campo3 = new String[users.length()];
+
+            for(int i=0;i<users.length();i++){
+
+                JSONObject jo = users.getJSONObject(i);
+                Campo1[i] = jo.getString(KEY1);
+                Campo2[i] = jo.getString(KEY2);
+                Campo3[i] = jo.getString(KEY3);
+
+                double mlat = Double.parseDouble(Campo2[i]);
+                double mlng = Double.parseDouble(Campo3[i]);
+                LatLng latLng = new LatLng(mlat, mlng);
+
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(latLng);
+                markerOptions.title(Campo1[i]);
+                mMap.addMarker(markerOptions);
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 

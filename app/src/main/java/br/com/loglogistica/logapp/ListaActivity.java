@@ -15,13 +15,14 @@ public class ListaActivity extends ListActivity {
 
     // ==============================================================================================================
     // DECLARAÇÕES DIVERSAS
-    // ==============================================================================================================
     public  ListView lv;
     ProgressDialog progressDialog;
 
-    //Volley conectividade. ATENÇÃO ID do Motoboy
-    public static final String JSON_URL = "http://webservice21214.azurewebsites.net/wservice.asmx/ListaEntregas?IdMotoboy=2";
+    //Volley conectividade
+    public static final String JSON_URL = "http://webservice21214.azurewebsites.net/wservice.asmx/ListaEntregas?IdMotoboy=" + Global.globalID ;
     private static final String TAG = "ListaActivity";
+    // ==============================================================================================================
+
 
     // ==============================================================================================================
     // CICLO DA ACTIVITY - onCreate
@@ -63,15 +64,12 @@ public class ListaActivity extends ListActivity {
     @Override
     public void onResume(){
         super.onResume();
-
-        //atualiza lista de entregas e preenche ListView
+        //atualiza lista de entregas em aberto e preenche ListView
         volleyStringRequst(JSON_URL);
-
     }
 
     //======================================================================================================================
     //JSON Parsing
-    //=====================================================================================================================
     private void showJSON(String json){
         //monta Array String com lista de Entregas
         ParseJSON pj = new ParseJSON(json);
@@ -80,6 +78,7 @@ public class ListaActivity extends ListActivity {
         ListaAdapter cl = new ListaAdapter(this, ParseJSON.IDs, ParseJSON.Titulos, ParseJSON.SubTitulos);
         lv.setAdapter(cl);
     }
+    //=====================================================================================================================
 
     //======================================================================================================================
     //VOLLEY CONECTIVIDADE - TROCA DE DADOS COM WEB-SERVICE - requisita Lista de Entregas (Bairro e Endereço)

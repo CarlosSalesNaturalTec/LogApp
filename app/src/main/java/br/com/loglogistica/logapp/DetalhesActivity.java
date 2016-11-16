@@ -74,7 +74,6 @@ public class DetalhesActivity extends Activity  {
 
                 StatusEntrega = parent.getItemAtPosition(position).toString();
 
-
             }
 
             @Override

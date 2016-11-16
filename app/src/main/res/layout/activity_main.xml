@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:text="Roteiro a Realizar"
         android:layout_marginTop="10dp"
+        android:id="@+id/btLista"
         android:onClick="btLista"/>
 
         <Button
@@ -31,6 +32,16 @@
         android:layout_height="wrap_content"
         android:text="Ver Roteiro no Mapa"
         android:layout_marginTop="10dp"
+        android:id="@+id/btMapa"
         android:onClick="btTransito" />
+
+    <TextView
+        android:text="ID: xxx"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="8dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/txtID"
+        />
 
 </LinearLayout>

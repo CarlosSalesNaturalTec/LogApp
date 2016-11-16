@@ -63,7 +63,6 @@ public class MapsDetalhe extends FragmentActivity implements OnMapReadyCallback,
 
     //===================================================================================================
     // Operações com MAPA
-    //===================================================================================================
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -202,7 +201,7 @@ public class MapsDetalhe extends FragmentActivity implements OnMapReadyCallback,
         }
     }
 
-    //ADICIONA MARCADOR
+    //Marcadores
     private void addMarks(GoogleMap googleMap) {
 
         double mlat = Double.parseDouble(MapLatitude);
@@ -212,9 +211,10 @@ public class MapsDetalhe extends FragmentActivity implements OnMapReadyCallback,
 
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
-        markerOptions.title("Local da Entrega");
+        markerOptions.title("Clique abaixo para exibir Rotas e Trânsito");
         mMap.addMarker(markerOptions);
     }
 
+    //===================================================================================================
 
 }

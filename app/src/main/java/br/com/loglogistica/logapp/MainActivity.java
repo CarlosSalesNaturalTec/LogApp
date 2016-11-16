@@ -1,7 +1,9 @@
 package br.com.loglogistica.logapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -11,6 +13,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,36 +35,40 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
     // ==============================================================================================================
     // DECLARAÇÕES DIVERSAS
-    // ==============================================================================================================
 
-    DateFormat dateFormat;
-    DateFormat horaFormat;
-
-    // dados de geolocalizacao
+    DateFormat dateFormat,horaFormat;
     Location mLastLocation;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     String lat, lon;
 
-    // ATENÇÃO em CONFIGURAÇÕES carregar dados do Motoboy
-    public int IdMotoboy =2;
-
-    // ID da entrega utilizada quando motoboy clicar no botão: iniciar viagem
-    public int IdEntrega =0;
+    String IdMotoboy="0",IdEntrega="0";
+    Button btLista,btMapa;
+    TextView txtID;
 
     //Volley conectividade
     private static String STRING_REQUEST_URL="";
     private static final String TAG = "MainActivity";
 
     // ==============================================================================================================
-    // CICLO DA ACTIVITY
+
+
     // ==============================================================================================================
+    // CICLO DA ACTIVITY
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        btLista = (Button) findViewById(R.id.btLista);
+        btMapa = (Button) findViewById(R.id.btMapa);
+        txtID = (TextView) findViewById(R.id.txtID);
+
+        //Google API
         buildGoogleApiClient();
+
+        // Identifica ID do Motoboy
+        IdentificaID();
     }
 
     @Override
@@ -75,6 +82,24 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         super.onDestroy();
         mGoogleApiClient.disconnect();
     }
+
+    public void IdentificaID(){
+
+        SharedPreferences preferences = getSharedPreferences("LOG_CONFIG",Context.MODE_PRIVATE);
+        if (preferences.contains(("IDMotoboy"))){
+            // Salva ID em variável Global para ser utilizado nas outras Activitys
+            Global.globalID = preferences.getString("IDMotoboy","0");
+            IdMotoboy = Global.globalID;
+            txtID.setText("ID: " + Global.globalID);
+        }else{
+            btLista.setEnabled(false);
+            btMapa.setEnabled(false);
+        }
+
+    }
+
+    // ==============================================================================================================
+
 
     synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -118,7 +143,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             lon = String.valueOf(mLastLocation.getLongitude());
         }
 
-        // envia dados de localização utilizando Volley API
+        // envia dados de localização utilizando Volley Library
         // ==============================================================================================================
         dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         horaFormat = new SimpleDateFormat("HH:mm:ss");
@@ -147,7 +172,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         lat = String.valueOf(location.getLatitude());
         lon = String.valueOf(location.getLongitude());
 
-        // envia dados de localização utilizando Volley API
+        // envia dados de localização utilizando Volley library
         // ==============================================================================================================
         dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         horaFormat = new SimpleDateFormat("HH:mm:ss");
@@ -177,7 +202,8 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     public boolean onMenuItemSelected(int panel, MenuItem item){
         switch (item.getItemId()){
             case 0 :
-                Toast.makeText(this, "Configurações Salvas." , Toast.LENGTH_LONG).show();
+                Intent it = new Intent(this, ConfigActivity.class);
+                startActivity(it);
                 break;
         }
         return true;
@@ -186,7 +212,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
     //======================================================================================================================
     //VOLLEY CONECTIVIDADE - TROCA DE DADOS COM WEB-SERVICE
-    //======================================================================================================================
     public void volleyStringRequst(String url){
 
         String  REQUEST_TAG = "br.com.loglogistica.volleyStringRequst";
