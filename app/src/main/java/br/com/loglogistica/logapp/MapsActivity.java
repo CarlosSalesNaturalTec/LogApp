@@ -272,7 +272,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(latLng);
-                markerOptions.title(Campo1[i]);
+                markerOptions.title(Campo1[i] + "-Clique abaixo para exibir Rotas e Trânsito");
                 mMap.addMarker(markerOptions);
 
             }

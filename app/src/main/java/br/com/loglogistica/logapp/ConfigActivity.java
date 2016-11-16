@@ -10,24 +10,33 @@ import android.widget.Toast;
 
 public class ConfigActivity extends Activity {
 
-    EditText editID;
+    EditText editID,editsenha;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config);
         editID = (EditText) findViewById(R.id.editIDConfig);
+        editsenha = (EditText) findViewById(R.id.editSenha);
     }
 
     public void SalvarID(View view){
 
-        SharedPreferences preferences = getSharedPreferences("LOG_CONFIG", Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("IDMotoboy",editID.getText().toString());
-        editor.commit();
+        String senha = editsenha.getText().toString();
 
-        Global.globalID = editID.getText().toString();
-        Toast.makeText(getApplicationContext(), "ID Salvo:"+ Global.globalID , Toast.LENGTH_SHORT).show();
+        switch (senha){
+            case "123456" :
+                SharedPreferences preferences = getSharedPreferences("LOG_CONFIG", Context.MODE_PRIVATE);
+                final SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("IDMotoboy",editID.getText().toString());
+                editor.commit();
+
+                Global.globalID = editID.getText().toString();
+                Toast.makeText(getApplicationContext(), "ID Salvo:"+ Global.globalID + ". Reiniciar Aplicativo", Toast.LENGTH_SHORT).show();
+                break;
+        default :
+            Toast.makeText(getApplicationContext(), "SENHA INCORRETA" , Toast.LENGTH_SHORT).show();
+        }
 
     }
 
