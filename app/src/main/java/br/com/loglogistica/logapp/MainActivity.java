@@ -128,7 +128,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(10000); // Atualizaçao a cada : 10 segundos
+        mLocationRequest.setInterval(20000); // Atualizaçao a cada : 10 segundos
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
@@ -193,6 +193,8 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         super.onCreateOptionsMenu(menu);
 
         MenuItem op1 = menu.add(0,0,0,"Configurações");
+        MenuItem op2 = menu.add(0,1,1,"Testar Mapa");
+
         op1.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
         return true;
@@ -204,6 +206,10 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             case 0 :
                 Intent it = new Intent(this, ConfigActivity.class);
                 startActivity(it);
+                break;
+            case 1 :
+                Intent it1 = new Intent(this, MapsActivity2.class);
+                startActivity(it1);
                 break;
         }
         return true;

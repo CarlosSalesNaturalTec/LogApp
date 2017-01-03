@@ -25,7 +25,7 @@ public class ConfigActivity extends Activity {
         String senha = editsenha.getText().toString();
 
         switch (senha){
-            case "123456" :
+            case "271216" :
                 SharedPreferences preferences = getSharedPreferences("LOG_CONFIG", Context.MODE_PRIVATE);
                 final SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("IDMotoboy",editID.getText().toString());
