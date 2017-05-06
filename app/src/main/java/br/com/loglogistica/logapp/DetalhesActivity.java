@@ -87,7 +87,7 @@ public class DetalhesActivity extends Activity  {
         IdEntrega = b.getString("IDEntrega");
 
         //requisita detalhes de entrega
-        JSON_URL = "http://webservice21214.azurewebsites.net/wservice.asmx/DetalhesEntrega?IdEntrega=" + IdEntrega;
+        JSON_URL = "http://logwebservice.azurewebsites.net/wservice.asmx/DetalhesEntrega?IdEntrega=" + IdEntrega;
         volleyStringRequst(JSON_URL);
 
     }
@@ -97,7 +97,7 @@ public class DetalhesActivity extends Activity  {
     //Consulta Web-Service - Detalhes da Entrega (Volley library)
     public void volleyStringRequst(String url){
 
-        String  REQUEST_TAG = "br.com.loglogistica.requisitaDetalhes";
+        String  REQUEST_TAG = "br.com.loglogistica.logappdetail";
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Aguarde...");
@@ -180,7 +180,7 @@ public class DetalhesActivity extends Activity  {
         String lat ="0",lon="0";
 
         // envia requisição para atualizar status da entrega: VIAGEM INICIADA
-        JSON_URL="http://webservice21214.azurewebsites.net/wservice.asmx/StartTravel?IdEntrega="+ IdEntrega + "&latitude=" + lat + "&longitude=" + lon + "&dataleitura=" + dateFormat.format(date) + "%20" + horaFormat.format(date);
+        JSON_URL="http://logwebservice.azurewebsites.net/wservice.asmx/StartTravel?IdEntrega="+ IdEntrega + "&latitude=" + lat + "&longitude=" + lon + "&dataleitura=" + dateFormat.format(date) + "%20" + horaFormat.format(date);
         volleyUpdateTravel(JSON_URL);
 
         txtStartTravel.setText("Inicio da Viagem: " + horaFormat.format(date));
@@ -199,7 +199,7 @@ public class DetalhesActivity extends Activity  {
         String mStatus = StatusEntrega.substring(0,2);
 
         // envia requisição para atualizar status da entrega: VIAGEM CONCLUIDA
-        JSON_URL="http://webservice21214.azurewebsites.net/wservice.asmx/EndTravel?IdEntrega="+ IdEntrega +
+        JSON_URL="http://logwebservice.azurewebsites.net/wservice.asmx/EndTravel?IdEntrega="+ IdEntrega +
                 "&latitude=" + lat + "&longitude=" + lon + "&dataLeitura=" + dateFormat.format(date) + "%20" + horaFormat.format(date)+ "&Status=" + mStatus;
         volleyUpdateTravel(JSON_URL);
 

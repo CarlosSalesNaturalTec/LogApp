@@ -93,7 +93,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         // solicita lista com coordenadas das entregas para exibição de marcadores - utilizando Volley Library
-        STRING_REQUEST_URL="http://webservice21214.azurewebsites.net/wservice.asmx/ListaCoordenadas?IdMotoboy="+Global.globalID;
+        STRING_REQUEST_URL="http://logwebservice.azurewebsites.net/wservice.asmx/ListaCoordenadas?IdMotoboy="+Global.globalID;
         volleyStringRequst(STRING_REQUEST_URL);
     }
 

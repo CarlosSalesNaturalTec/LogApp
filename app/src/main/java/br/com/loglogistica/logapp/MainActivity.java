@@ -149,7 +149,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         horaFormat = new SimpleDateFormat("HH:mm:ss");
         Date date = new Date();
 
-        STRING_REQUEST_URL="http://webservice21214.azurewebsites.net/wservice.asmx/Historico?IDMotoboy="+ IdMotoboy + "&identrega="
+        STRING_REQUEST_URL="http://logwebservice.azurewebsites.net/wservice.asmx/Historico?IDMotoboy="+ IdMotoboy + "&identrega="
                 + IdEntrega + "&latitude=" + lat + "&longitude=" + lon + "&dataleitura=" + dateFormat.format(date) + "%20" + horaFormat.format(date);
         volleyStringRequst(STRING_REQUEST_URL);
         // ==============================================================================================================
@@ -178,7 +178,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         horaFormat = new SimpleDateFormat("HH:mm:ss");
         Date date = new Date();
 
-        STRING_REQUEST_URL="http://webservice21214.azurewebsites.net/wservice.asmx/Historico?IDMotoboy="+ IdMotoboy + "&identrega="
+        STRING_REQUEST_URL="http://logwebservice.azurewebsites.net/wservice.asmx/Historico?IDMotoboy="+ IdMotoboy + "&identrega="
                 + IdEntrega + "&latitude=" + lat + "&longitude=" + lon + "&dataleitura=" + dateFormat.format(date) + "%20" + horaFormat.format(date);
         volleyStringRequst(STRING_REQUEST_URL);
         // ==============================================================================================================
@@ -193,7 +193,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         super.onCreateOptionsMenu(menu);
 
         MenuItem op1 = menu.add(0,0,0,"Configurações");
-        MenuItem op2 = menu.add(0,1,1,"Testar Mapa");
+        MenuItem op2 = menu.add(0,1,1,"Mapa");
 
         op1.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
@@ -220,7 +220,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     //VOLLEY CONECTIVIDADE - TROCA DE DADOS COM WEB-SERVICE
     public void volleyStringRequst(String url){
 
-        String  REQUEST_TAG = "br.com.loglogistica.volleyStringRequst";
+        String  REQUEST_TAG = "br.com.loglogistica.logapp";
 
         StringRequest strReq = new StringRequest(url, new Response.Listener<String>() {
             @Override
