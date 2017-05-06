@@ -230,7 +230,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MainActivity.this, "Falha no Envio de Dados", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Falha no Envio de Dados.", Toast.LENGTH_LONG).show();
             }
         });
         // Adding String request to request queue
