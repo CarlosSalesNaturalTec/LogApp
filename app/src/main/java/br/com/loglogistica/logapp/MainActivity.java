@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -50,6 +51,10 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     private static String STRING_REQUEST_URL="";
     private static final String TAG = "MainActivity";
 
+    //Power Manager - Wake Lock
+    PowerManager powerManager;
+    PowerManager.WakeLock wakeLock;
+
     // ==============================================================================================================
 
 
@@ -69,6 +74,12 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
         // Identifica ID do Motoboy
         IdentificaID();
+
+        //Modo Wake Lock - mantem sempre ativo
+        powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyWakelockTag");
+        wakeLock.acquire();
+
     }
 
     @Override
@@ -81,6 +92,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     protected void onDestroy() {
         super.onDestroy();
         mGoogleApiClient.disconnect();
+        wakeLock.release();
     }
 
     public void IdentificaID(){
@@ -128,7 +140,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(20000); // Atualizaçao a cada : 10 segundos
+        mLocationRequest.setInterval(10000); // Atualizaçao a cada : 10 segundos
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
@@ -230,7 +242,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MainActivity.this, "Falha no Envio de Dados", Toast.LENGTH_LONG).show();
+                //Toast.makeText(MainActivity.this, "Falha no Envio de Dados", Toast.LENGTH_LONG).show();
             }
         });
         // Adding String request to request queue

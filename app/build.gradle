@@ -4,19 +4,19 @@ android {
     signingConfigs {
         release {
             keyAlias 'assinatura log'
-            keyPassword 'Pwd@2016'
-            storeFile file('C:/android suporte/assinaturaLog.jks')
-            storePassword 'Pwd@2016'
+            keyPassword 'Pwd@2017'
+            storeFile file('~/StudioProjects/assinaturaLog.jks')
+            storePassword 'Pwd@2017'
         }
     }
     compileSdkVersion 24
-    buildToolsVersion "24.0.3"
+    buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "br.com.loglogistica.logapp"
         minSdkVersion 19
         targetSdkVersion 24
-        versionCode 6
-        versionName "6.0"
+        versionCode 8
+        versionName "8.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         // Enabling multidex support.
         multiDexEnabled true
