@@ -18,4 +18,6 @@
 
     <string name="title_activity_maps2">Mapa</string>
 
+    <string name="title_activity_LOG">LOG de Atividades</string>
+
 </resources>

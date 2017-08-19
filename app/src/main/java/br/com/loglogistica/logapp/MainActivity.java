@@ -27,6 +27,7 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import java.io.FileOutputStream;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -45,7 +46,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
     String IdMotoboy="0",IdEntrega="0";
     Button btLista,btMapa;
-    TextView txtID;
+    TextView txtID,txtStatus;
 
     //Volley conectividade
     private static String STRING_REQUEST_URL="";
@@ -68,12 +69,15 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         btLista = (Button) findViewById(R.id.btLista);
         btMapa = (Button) findViewById(R.id.btMapa);
         txtID = (TextView) findViewById(R.id.txtID);
+        txtStatus = (TextView) findViewById(R.id.txtStatus);
 
         //Google API
         buildGoogleApiClient();
 
         // Identifica ID do Motoboy
         IdentificaID();
+
+        RegistraLOG("Iniciado");
 
         //Modo Wake Lock - mantem sempre ativo
         powerManager = (PowerManager) getSystemService(POWER_SERVICE);
@@ -89,7 +93,21 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        RegistraLOG("Pause");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        RegistraLOG("Resume");
+    }
+
+
+    @Override
     protected void onDestroy() {
+        RegistraLOG("Encerrado");
         super.onDestroy();
         mGoogleApiClient.disconnect();
         wakeLock.release();
@@ -140,9 +158,10 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(10000); // Atualizaçao a cada : 10 segundos
+        mLocationRequest.setInterval(30000); // Atualizaçao a cada : 30 segundos
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            RegistraLOG("SemPermissao");
             return;
         }
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
@@ -175,6 +194,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        RegistraLOG("FalhaConexaoGoogle");
         buildGoogleApiClient();
     }
 
@@ -198,6 +218,8 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     }
 
 
+
+
     //======================================================================================================================
     //MENU
     //======================================================================================================================
@@ -206,6 +228,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
         MenuItem op1 = menu.add(0,0,0,"Configurações");
         MenuItem op2 = menu.add(0,1,1,"Mapa");
+        MenuItem op3 = menu.add(0,2,2,"LOG do Aplicativo");
 
         op1.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
@@ -223,6 +246,10 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 Intent it1 = new Intent(this, MapsActivity2.class);
                 startActivity(it1);
                 break;
+            case 2 :
+                Intent it2 = new Intent(this, LOGActivity.class);
+                startActivity(it2);
+                break;
         }
         return true;
     }
@@ -237,12 +264,13 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         StringRequest strReq = new StringRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                RegistraLOG("Envio_OK");
             }
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                //Toast.makeText(MainActivity.this, "Falha no Envio de Dados", Toast.LENGTH_LONG).show();
+                RegistraLOG("FalhaEnvio_" + error);
             }
         });
         // Adding String request to request queue
@@ -259,6 +287,27 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
     public void volleyClearCache(){
         AppSingleton.getInstance(getApplicationContext()).getRequestQueue().getCache().clear();
+    }
+
+    public void RegistraLOG(String txtLog){
+        //Lança em Arquivo de LOG
+        //=================================================================================================
+        dateFormat = new SimpleDateFormat("dd_MM_yy");
+        horaFormat = new SimpleDateFormat("HH:mm:ss");
+        Date date = new Date();
+        try {
+            String string = horaFormat.format(date) + "hs_" + txtLog + "\n";
+
+            FileOutputStream fos = openFileOutput("LOG_Registro", Context.MODE_APPEND);
+            fos.write(string.getBytes());
+            fos.close();
+
+            txtStatus.setText("Status: " + horaFormat.format(date) + " - " + txtLog );
+
+        }
+        catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "Não foi possivel gravar no arquivo de LOG", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }
